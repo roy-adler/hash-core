@@ -1,6 +1,9 @@
 // import { PartialProjectFragment } from "./partialProjectByPath";
 import { PartialSimulationProject } from "../../../features/project/types";
 import { preparePartialSimulationProject } from "../../../features/project/utils";
+
+// Set VITE_ONBOARDING_PROJECT_PATH to override the default project loaded when
+// hCore starts.
 // import { query } from "../query";
 
 /*eslint-disable @typescript-eslint/require-await*/
@@ -22,7 +25,9 @@ export const getOnboardingProject =
     //     `
     // );
     const onBoardingProject = {
-      pathWithNamespace: "@hash/wildfires-regrowth",
+      pathWithNamespace:
+        import.meta.env.VITE_ONBOARDING_PROJECT_PATH ??
+        "@hash/wildfires-regrowth",
       name: "Wildfires - Regrowth",
       updatedAt: "2022-05-19T13:57:26.000Z",
       type: "Simulation",

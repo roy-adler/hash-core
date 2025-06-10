@@ -126,6 +126,22 @@ yarn start:core
 
 This will compile the application and host it for you at a default location of [`localhost:8080`](http://localhost:8080).
 
+#### Custom Configuration
+
+You can override the port or base path used by the development server by
+providing environment variables when starting hCore:
+
+```sh
+PORT=3000 BASE_PATH=/core yarn start:core
+```
+
+To change the initial project loaded when hCore starts, set
+`VITE_ONBOARDING_PROJECT_PATH` to the desired project path:
+
+```sh
+VITE_ONBOARDING_PROJECT_PATH="@myuser/my-project" yarn start:core
+```
+
 ### Development and Troubleshooting
 
 If you want to run the application in development mode, which will enable hot-reloading when you make changes, run:
@@ -150,3 +166,17 @@ Several different packages in this repository are orchestrated as yarn workspace
  - `yarn serve:core`, to rebuild everything and then host the hCore application, in development mode
  - `yarn`, to rebuild everything.
  - `yarn fmt`, to apply formatting to source code when doing development work
+
+### Docker
+
+You can build a containerized version of hCore using the provided
+`Dockerfile`:
+
+```sh
+docker build -t sim-core .
+docker run -p 8080:8080 sim-core
+```
+
+Use the `PORT` and `BASE_PATH` environment variables to adjust the listening
+port or served path when running the container.
+

@@ -20,6 +20,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     root: "src",
+    base: process.env.BASE_PATH ?? "/",
     build: {
       // Relative to the root
       outDir: "../dist",
@@ -38,10 +39,10 @@ export default defineConfig(({ mode }) => {
       BUILD_STAMP: JSON.stringify(BUILD_STAMP),
     },
     server: {
-      port: 8080,
+      port: parseInt(process.env.PORT ?? "8080", 10),
     },
     preview: {
-      port: 8080,
+      port: parseInt(process.env.PORT ?? "8080", 10),
       open: true,
     },
     resolve: {
