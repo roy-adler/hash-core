@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { FancyButton } from "../../Fancy";
+import { FancyButton } from "../../Fancy/Button";
 import { HcBehaviorFile } from "../../../features/files/types";
 import { IconUpdate } from "../../Icon/Update";
 import { ModalForm } from "../ModalForm";

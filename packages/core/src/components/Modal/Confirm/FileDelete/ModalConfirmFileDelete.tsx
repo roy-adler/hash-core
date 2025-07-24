@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 
 import { BigModal } from "../..";
-import { FancyButton } from "../../../Fancy";
+import { FancyButton } from "../../../Fancy/Button";
 import { useModalConfirm } from "../hooks";
 
 import "./ModalConfirmFileDelete.css";

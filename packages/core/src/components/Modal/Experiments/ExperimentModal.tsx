@@ -29,7 +29,7 @@ import {
   RawExperimentType,
 } from "./types";
 import { ExperimentTypeTooltip } from "./ExperimentTypeTooltip";
-import { FancyButton } from "../../Fancy";
+import { FancyButton } from "../../Fancy/Button";
 import { FancyButtonWithDropdown } from "../../Fancy/Button/FancyButtonWithDropdown";
 import { IconHelpCircleOutline } from "../../Icon/HelpCircleOutline";
 import { IconTrash } from "../../Icon";

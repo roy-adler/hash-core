@@ -1,6 +1,6 @@
 import React, { FC, Dispatch, SetStateAction, memo } from "react";
 
-import { FancyButton } from "../../Fancy";
+import { FancyButton } from "../../Fancy/Button";
 
 import "./DataTablePagination.css";
 

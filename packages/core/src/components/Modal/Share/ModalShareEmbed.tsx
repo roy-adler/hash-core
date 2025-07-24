@@ -1,6 +1,6 @@
 import React, { FC, MouseEvent } from "react";
 
-import { FancyButton } from "../../Fancy";
+import { FancyButton } from "../../Fancy/Button";
 import { IS_DEV } from "../../../util/api/paths";
 import { IconSpinner } from "../../Icon";
 import { ModalShareAccessCodeDisclaimer } from "./ModalShareAccessCodeDisclaimer";

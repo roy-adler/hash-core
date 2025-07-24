@@ -1,8 +1,8 @@
 import React, { FC } from "react";
 import classNames from "classnames";
 
-import { FancyButtonAsyncTask } from "../../Fancy/Button/FancyButtonAsyncTask";
 import { useClipboardWriteText } from "../../../hooks/useClipboardWriteText";
+import { FancyButtonAsyncTask } from "../../Fancy/Button/FancyButtonAsyncTask";
 
 import "./ModalShareCopyButton.css";
 

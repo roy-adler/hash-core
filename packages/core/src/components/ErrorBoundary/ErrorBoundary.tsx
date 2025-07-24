@@ -11,7 +11,7 @@ import { customAlphabet } from "nanoid";
 import { BasicDiscordWidget } from "../DiscordWidget/DiscordWidget";
 import { BigModal } from "../Modal";
 import { ErrorDetails } from "../ErrorDetails";
-import { FancyButton } from "../Fancy";
+import { FancyButton } from "../Fancy/Button";
 import { IS_LOCAL } from "../../util/api";
 
 import "./ErrorBoundary.css";

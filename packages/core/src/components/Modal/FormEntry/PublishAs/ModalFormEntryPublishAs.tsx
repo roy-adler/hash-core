@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 
 import { Dropdown } from "../../../Dropdown";
-import { FancyButton } from "../../../Fancy";
+import { FancyButton } from "../../../Fancy/Button";
 import type { ReactSelectOption } from "../../../Dropdown/types";
 
 import "./ModalFormEntryPublishAs.css";
