@@ -59,5 +59,5 @@ pub fn list_behaviors() -> Result<JsValue, JsValue> {
             })
         })
         .collect();
-    to_value(&simple_list).map_err(err_to_jsvalue)
+    to_value(&simple_list).map_err(|e| JsValue::from(e.to_string()))
 }
