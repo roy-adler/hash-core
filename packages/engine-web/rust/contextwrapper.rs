@@ -11,7 +11,7 @@ pub struct ContextWrapper {
 impl ContextWrapper {
     pub fn new(context: &Context) -> SimulationResult<ContextWrapper> {
         // we do not store properties in this wrapper because the JS side already has them
-        let js_messages = to_value(&context.messages).map_err(|e| JsValue::from(e.to_string()))?;
+        let js_messages = to_value(&context.messages).map_err(|e| SimulationError::from(e.to_string()))?;
         let neighbor_ids = context
             .neighbors
             .iter()
