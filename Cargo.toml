@@ -1,6 +1,7 @@
 [workspace]
 
 members = ["packages/engine", "packages/engine-web", "packages/engine-types"]
+resolver = "2"
 
 [profile.dev]
 opt-level = 0
