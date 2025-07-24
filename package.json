@@ -138,8 +138,10 @@
     "@types/react": "16.9.56"
   },
   "dependencies": {
+    "@types/cypress": "^1.1.6",
     "monaco-editor": "^0.52.2",
     "tinygradient": "^2.0.1",
-    "vite": "5"
+    "vite": "5",
+    "vite-plugin-wasm": "^3.5.0"
   }
 }
