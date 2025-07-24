@@ -1,4 +1,4 @@
-use kdtree::KdtreePointTrait;
+use crate::kdtree::KdtreePointTrait;
 
 pub struct Bounds {
     pub bounds: [(f64, f64); 3],

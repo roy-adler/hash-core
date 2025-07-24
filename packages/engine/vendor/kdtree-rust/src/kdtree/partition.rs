@@ -1,4 +1,4 @@
-use kdtree::KdtreePointTrait;
+use crate::kdtree::KdtreePointTrait;
 
 enum PointsWereOnSide {
     Left,
@@ -149,7 +149,7 @@ fn partition_kdtree<T: KdtreePointTrait>(
 #[cfg(test)]
 mod tests {
     use kdtree::test_common::{Point1WithId, Point2WithId};
-    use kdtree::KdtreePointTrait;
+    use crate::kdtree::KdtreePointTrait;
 
     use rand::distributions::{IndependentSample, Range};
     use rand::thread_rng;

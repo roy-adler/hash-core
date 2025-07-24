@@ -7,6 +7,7 @@ keywords = ["tree", "dimension", "nearest", "search", "neighbor"]
 readme = "README.md"
 license = "Unlicense"
 description = "K-dimensional tree implemented in Rust for fast NN querying."
+edition = "2021"
 
 [lib]
 name = "kdtree"
