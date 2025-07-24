@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 
-import { FancyButton, FancyProps } from "../../Fancy";
+import { FancyButton } from "../../Fancy/Button";
+import type { FancyProps } from "../../Fancy";
 
 type ToastButtonProps = Pick<FancyProps<HTMLButtonElement>, "onClick" | "icon">;
 

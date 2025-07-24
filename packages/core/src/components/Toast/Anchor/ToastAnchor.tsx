@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 
-import { FancyAnchor } from "../../Fancy";
+import { FancyAnchor } from "../../Fancy/Anchor";
 import { FancyAnchorProps } from "../../Fancy/Anchor/FancyAnchor";
 
 type ToastAnchorProps = Pick<FancyAnchorProps, "path" | "icon" | "query">;

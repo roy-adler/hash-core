@@ -104,3 +104,4 @@ export function getIcon(icon: FancyIcon, size: FancySize): ReactChild {
 
 export { FancyAnchor } from "./Anchor";
 export { FancyButton } from "./Button";
+export type { FancyProps } from "./index";

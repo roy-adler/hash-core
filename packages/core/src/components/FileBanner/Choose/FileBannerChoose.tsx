@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from "react";
 
-import { FancyButton } from "../../Fancy";
+import { FancyButton } from "../../Fancy/Button";
 
 import "../FileBanner.css";
 import "./FileBannerChoose.css";
