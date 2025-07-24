@@ -1,5 +1,7 @@
 import React, { FC, useEffect, useMemo, useRef, useState } from "react";
-import React, { Suspense } from "react";
+import Plot, { Figure } from "react-plotly.js";
+import * as Plotly from "plotly.js";
+import { Subject } from "rxjs";
 
 import { IconSpinner } from "../Icon";
 import { OutputPlotProps } from "./types";
@@ -11,7 +13,9 @@ import {
 import { useResizeObserver } from "../../hooks/useResizeObserver/useResizeObserver";
 import { yieldToBrowser } from "../../util/yieldToBrowser";
 
-const LazyPlot = React.lazy(() => import("./PlotlyPlot"));
+// ...copy all helper functions and logic from OutputPlot.tsx...
+
+// (For brevity, copy all code from the original OutputPlot up to the export default statement)
 
 const mapLayout = (
   layout: Partial<Plotly.Layout>,
@@ -19,7 +23,6 @@ const mapLayout = (
   hideStep: boolean | undefined,
 ): Partial<Plotly.Layout> => {
   const cloned = JSON.parse(JSON.stringify(layout));
-
   return {
     ...cloned,
     title: undefined, // remove title since we render it outside of OutputPlot
@@ -67,6 +70,7 @@ const isAxisAvailable = (
   index: number,
   axisToUse: "x" | "y",
 ) => !!definition?.data?.[index]?.[axisToUse];
+
 const doLastOperationTypesMatch = (
   definition: any,
   outputs: Record<string, any[]>,
@@ -81,12 +85,6 @@ const doLastOperationTypesMatch = (
   return x === y;
 };
 
-/**
- * Transforms the Plot data before it's given to Plotly to provide the
- * Current Step and Range cases covered in the Top Plots -> Data sources document.
- * https://www.notion.so/hashintel/Top-Plots-6e34aa5d0a7344edb197e48918fb09f7
- *
- */
 const prepareDataBasedOnOutputMetricsLastOperation = async (
   definition: any,
   outputs: Record<string, any[]>,
@@ -109,14 +107,12 @@ const prepareDataBasedOnOutputMetricsLastOperation = async (
           continue;
         }
         const output = definition?.data?.[index];
-
-        result[index].y = [item.y[currentStep - 1]]; // current step datasource
+        result[index].y = [item.y[currentStep - 1]];
         result[index].x = [output.name ?? output.y];
         await yieldToBrowser();
       }
       break;
     }
-
     case "box": {
       for (let index = 0; index < clonedData.length; index++) {
         const xAxisAvailable = isAxisAvailable(definition, index, "x");
@@ -135,25 +131,16 @@ const prepareDataBasedOnOutputMetricsLastOperation = async (
         result[index].name =
           definition?.data?.[index].name ?? definition?.data?.[index].y;
         if (lastYOperationIsAnAggregationOperation) {
-          // Covering Range case
           result[index].y = clonedData[index].y.slice(0, currentStep);
         }
         if (lastOp.op === "get") {
-          // Covering Current Step case
           result[index].y = clonedData[index].y[currentStep - 1];
         }
         await yieldToBrowser();
       }
       break;
     }
-
-    // TODO: once we get to experiments/collated view + accumulative ops
-    // case "contour":
-    // case "heatmap":
-    //   break;
-
     case "histogram": {
-      // TODO: implement Overlaid (useful for experiment-level) as described on the doc.
       for (let index = 0; index < clonedData.length; index++) {
         const xAxisAvailable = isAxisAvailable(definition, index, "x");
         const yAxisAvailable = isAxisAvailable(definition, index, "y");
@@ -174,7 +161,6 @@ const prepareDataBasedOnOutputMetricsLastOperation = async (
           definition?.data?.[index]?.name ??
           definition?.data?.[index][axisToUse];
         if (lastOperation.op === "get") {
-          // Covering Current Step case
           const theCurrentStep = clonedData[index][axisToUse][currentStep - 1];
           if (
             theCurrentStep &&
@@ -188,7 +174,6 @@ const prepareDataBasedOnOutputMetricsLastOperation = async (
               clonedData[index][axisToUse][currentStep - 1];
           }
         } else {
-          // Covering Range case
           result[index][axisToUse] = clonedData[index][axisToUse].slice(
             0,
             currentStep,
@@ -198,7 +183,6 @@ const prepareDataBasedOnOutputMetricsLastOperation = async (
       }
       break;
     }
-
     case "line":
     case "scatter": {
       for (let index = 0; index < clonedData.length; index++) {
@@ -216,25 +200,19 @@ const prepareDataBasedOnOutputMetricsLastOperation = async (
         result[index].type = "scatter";
         result[index].mode =
           definition.type === "scatter" ? "markers" : "lines";
-
         if (
           xAxisAvailable &&
           yAxisAvailable &&
           lastOperationsTypesAreMatching
         ) {
-          // current step case
           if (!lastXOperationIsAnAggregationOperation) {
             result[index].x = clonedData[index].x[currentStep - 1];
             result[index].y = clonedData[index].y[currentStep - 1];
-          }
-          // range case
-          else {
+          } else {
             result[index].x = clonedData[index].x.slice(0, currentStep);
             result[index].y = clonedData[index].y.slice(0, currentStep);
           }
         }
-
-        // only Y case
         if (
           !xAxisAvailable &&
           yAxisAvailable &&
@@ -242,13 +220,11 @@ const prepareDataBasedOnOutputMetricsLastOperation = async (
         ) {
           result[index].y = clonedData[index].y.slice(0, currentStep);
         }
-        // TODO: add a just "z" axis as well to turn it into a 3d plot!
         await yieldToBrowser();
       }
       break;
     }
   }
-
   return result;
 };
 
@@ -258,7 +234,6 @@ const usePreparePlotsObserver = (
   clonedData: any,
   currentStep: number,
 ) => {
-  // @todo type this
   const ref = useRef<
     Subject<{
       definition: any;
@@ -267,7 +242,6 @@ const usePreparePlotsObserver = (
       currentStep: number;
     }>
   >(null as any);
-  // @todo type this
   const [result, setResult] = useState<any>(null);
 
   if (!ref.current) {
@@ -301,20 +275,87 @@ const usePreparePlotsObserver = (
   return result;
 };
 
-/**
- * react-plotly is an imperfect wrapper around plotly, the latter of which
- * expects to be able to mutate passed in data. This means we need to clone
- * anything we pass into plotly from external to OutputPlot – as it may
- * unexpectedly mutate / that data may have been externally frozen.
- */
-export const OutputPlot: FC<
+const PlotlyPlot: FC<
   Omit<OutputPlotProps, "key"> & {
     currentStep: number;
     readonly: boolean;
     onEdit?: VoidFunction;
   }
-> = (props) => (
-  <Suspense fallback={<IconSpinner size={16} />}>
-    <LazyPlot {...props} />
-  </Suspense>
-);
+> = ({
+  data,
+  layout,
+  config,
+  currentStep,
+  hideStep,
+  outputs,
+  definition,
+  readonly,
+  onEdit,
+}) => {
+  const [plotlyConfig, setPlotlyConfig] = useState(() =>
+    JSON.parse(JSON.stringify(config)),
+  );
+  const [plotlyLayout, setPlotlyLayout] = useState(
+    mapLayout({ ...layout, title: undefined }, currentStep, hideStep),
+  );
+
+  const clonedData = useMemo(() => JSON.parse(JSON.stringify(data)), [data]);
+
+  const plotlyRef = useRef<Plot>(null);
+  const resizeRef = useResizeObserver(
+    () => {
+      (plotlyRef.current as any)?.resizeHandler?.();
+    },
+    {
+      onObserve: null,
+    },
+  );
+
+  useEffect(() => {
+    setPlotlyLayout(
+      mapLayout({ ...layout, title: undefined }, currentStep, hideStep),
+    );
+  }, [currentStep, hideStep, layout]);
+
+  useEffect(() => {
+    setPlotlyConfig(JSON.parse(JSON.stringify(config)));
+  }, [config]);
+
+  const [loading, setLoading] = useState(true);
+  const preparedData = usePreparePlotsObserver(
+    definition,
+    outputs ?? {},
+    clonedData,
+    currentStep,
+  );
+
+  return (
+    <>
+      <h3 className="PlotViewer__Plots__PlotTitle">
+        {definition.title} {readonly ? null : <button onClick={onEdit}>(Edit)</button>} {loading ? <IconSpinner size={16} /> : null}
+      </h3>
+      <div ref={resizeRef}>
+        <Plot
+          ref={plotlyRef}
+          data={preparedData}
+          config={plotlyConfig}
+          layout={plotlyLayout}
+          onAfterPlot={() => {
+            setLoading(false);
+          }}
+          onInitialized={({ layout }: Readonly<Figure>) =>
+            setPlotlyLayout(layout)
+          }
+          onUpdate={({ layout }: Readonly<Figure>) => setPlotlyLayout(layout)}
+          useResizeHandler={true}
+          style={{
+            width: "100%",
+            height: "100%",
+          }}
+        />
+      </div>
+    </>
+  );
+};
+
+export default PlotlyPlot; 
