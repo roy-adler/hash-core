@@ -104,7 +104,7 @@
     "babel-jest": "26.6.3",
     "babel-loader": "8.2.1",
     "babel-plugin-dynamic-import-node": "^2.3.3",
-    "caniuse-lite": "^1.0.30001563",
+    "caniuse-lite": "^1.0.30001727",
     "cross-env": "7.0.3",
     "eslint": "^8.53.0",
     "eslint-config-prettier": "9.0.0",
@@ -137,5 +137,9 @@
   "resolutions": {
     "@types/react": "16.9.56"
   },
-  "dependencies": {}
+  "dependencies": {
+    "monaco-editor": "^0.52.2",
+    "tinygradient": "^2.0.1",
+    "vite": "5"
+  }
 }
