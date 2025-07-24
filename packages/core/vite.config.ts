@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react";
 import timestampCJS from "time-stamp";
 import wasm from "vite-plugin-wasm";
 import topLevelAwait from "vite-plugin-top-level-await";
+import { visualizer } from "rollup-plugin-visualizer";
 
 //commonJS adaptor shims
 const monacoEditorPlugin = (monacoEditorPluginCJS as any).default;
@@ -78,6 +79,17 @@ export default defineConfig(({ mode }) => {
       plugins: () => [wasm(), topLevelAwait()],
       format: "es",
     },
-    plugins: [wasm(), topLevelAwait(), react(), monacoEditorPlugin({})],
+    plugins: [
+      wasm(),
+      topLevelAwait(),
+      react(),
+      monacoEditorPlugin({}),
+      isProduction && process.env.ANALYZE && visualizer({
+        filename: "../dist/bundle-report.html",
+        open: true,
+        gzipSize: true,
+        brotliSize: true,
+      }),
+    ].filter(Boolean),
   };
 });

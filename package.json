@@ -123,6 +123,7 @@
     "request": "2.88.2",
     "request-promise-native": "1.0.9",
     "rimraf": "3.0.2",
+    "rollup-plugin-visualizer": "^6.0.3",
     "shelljs": "0.8.5",
     "time-stamp": "2.2.0",
     "tmp": "0.2.1",
