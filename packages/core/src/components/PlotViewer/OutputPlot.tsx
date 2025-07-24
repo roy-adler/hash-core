@@ -1,5 +1,4 @@
-import React, { FC, useEffect, useMemo, useRef, useState } from "react";
-import React, { Suspense } from "react";
+import React, { FC, useEffect, useMemo, useRef, useState, Suspense } from "react";
 
 import { IconSpinner } from "../Icon";
 import { OutputPlotProps } from "./types";
