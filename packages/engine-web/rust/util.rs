@@ -2,6 +2,7 @@ use hashintel_core::prelude::*;
 use js_sys::Error;
 use serde_json::json;
 use wasm_bindgen::prelude::*;
+use serde_wasm_bindgen::to_value;
 
 #[derive(Debug)]
 pub struct JsError(JsValue);
@@ -58,5 +59,5 @@ pub fn list_behaviors() -> Result<JsValue, JsValue> {
             })
         })
         .collect();
-    JsValue::from_serde(&simple_list).map_err(err_to_jsvalue)
+    to_value(&simple_list).map_err(err_to_jsvalue)
 }
